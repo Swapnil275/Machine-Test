@@ -1,5 +1,206 @@
-<div>
-  <h1>Hello World</h1>
-  <button (click)='getCategories()'>Get Categories</button>
+<div class="container">
+  <!-- <h1>Hello World</h1>
+  <button (click)='getCategories()'>Get Categories</button> -->
+  <!-- <form (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="productName" class="form-label">Product Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="productName"
+        [(ngModel)]="productName"
+        name="productName"
+     
+      />
+    </div>
+    
+    <div class="mb-3">
+      <label for="categorySelect" class="form-label">Category</label>
+      <select
+        class="form-select"
+        id="categorySelect"
+        [(ngModel)]="selectedCategory"
+        name="selectedCategory"
+     
+      >
+        <option value="" selected>Select the Category</option>
+        <option
+          *ngFor="let category of categories"
+          [value]="category.CategoryName"
+        >
+          {{ category.CategoryName }}
+        </option>
+      </select>
+    </div>
+    
+    <button type="submit" class="btn btn-primary my-2" >
+      Add Product
+    </button>
+  </form> -->
+  <form
+    #productForm="ngForm"
+    (ngSubmit)="onSubmit(productForm)"
+    class="container w-50"
+  >
+    <div class="mb-3">
+      <label for="productName" class="form-label">Product Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="productName"
+        [(ngModel)]="productName"
+        name="productName"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="categorySelect" class="form-label">Category</label>
+      <select
+        class="form-select"
+        id="categorySelect"
+        [(ngModel)]="selectedCategory"
+        name="selectedCategory"
+        required
+      >
+        <option value="" disabled selected>Select the Category</option>
+        <option
+          *ngFor="let category of categories"
+          [value]="category.CategoryName"
+        >
+          {{ category.CategoryName }}
+        </option>
+      </select>
+    </div>
+    <div class="text-center">
+      <button
+        type="submit"
+        [ngClass]="
+          editingProductId !== null ? 'btn btn-success' : 'btn btn-primary'
+        "
+        [disabled]="productForm.invalid"
+      >
+        {{ editingProductId !== null ? "Update Product" : "Add Product" }}
+      </button>
+    </div>
+  </form>
+
+  <table class="table table-striped my-3">
+    <thead>
+      <tr>
+        <th scope="col">Sr.No</th>
+        <th scope="col">ProductID</th>
+        <th scope="col">ProductName</th>
+        <th scope="col">CategoryID</th>
+        <th scope="col">CategoryName</th>
+        <th scope="col">Mode</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ product.ProductId }}</td>
+        <td>{{ product.ProductName }}</td>
+        <td>{{ product.categoryId }}</td>
+        <td>{{ product.ProductCategory }}</td>
+        <td>
+          <button
+            type="button "
+            (click)="updateProduct(product.ProductId)"
+            class="btn btn-outline-warning btn-sm mx-2"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            (click)="deleteProduct(product.ProductId)"
+            class="btn btn-outline-danger btn-sm mx-2"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      <!-- <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>fat</td>
+        <td>fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td >Larry the Bird</td>
+        <td>twitter</td>
+        <td>twitter</td>
+        <td>twitter</td>
+      </tr> -->
+    </tbody>
+  </table>
+  <!-- <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <a class="page-link">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav> -->
+  <!-- <label for="pageSize">Page Size:</label>
+  <select
+    id="pageSize"
+    [(ngModel)]="pageSize"
+    (change)="getProducts(1, pageSize)"
+  >
+    <option [value]="5">5</option>
+    <option [value]="10" selected>10</option>
+    <option [value]="25">25</option>
+    <option [value]="50">50</option>
+  </select> -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <!-- Previous Button -->
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a
+          class="page-link"
+          (click)="onPageChange(currentPage - 1)"
+          *ngIf="currentPage > 1"
+          href="javascript:void(0);"
+        >
+          Previous
+        </a>
+      </li>
+
+      <!-- Dynamic Page Numbers -->
+      <ng-container
+        *ngFor="let page of [].constructor(totalPages); let i = index"
+      >
+        <li class="page-item" [class.active]="currentPage === i + 1">
+          <a
+            class="page-link"
+            (click)="onPageChange(i + 1)"
+            href="javascript:void(0);"
+          >
+            {{ i + 1 }}
+          </a>
+        </li>
+      </ng-container>
+
+      <!-- Next Button -->
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a
+          class="page-link"
+          (click)="onPageChange(currentPage + 1)"
+          *ngIf="currentPage < totalPages"
+          href="javascript:void(0);"
+        >
+          Next
+        </a>
+      </li>
+    </ul>
+  </nav>
 </div>
 <!-- <router-outlet /> -->
