@@ -22,7 +22,6 @@ export class ProductsService {
   }
 
   updateProduct(productId: number, payload: any): Observable<any> {
-    console.log('**************new payload***********',payload);
     return this._http.put<any>(this.baseUrl+ '/' +productId, payload);
   }
   deleteProduct(productId: number) : Observable<any> {

@@ -131,12 +131,17 @@ app.post('/products', (req, res) => {
 
 app.put('/products/:id', (req, res) => {
   const { id } = req.params;
-  const { ProductName,ProductCategory } = req.body;
-  db.query('UPDATE products SET ProductName = ? WHERE ProductId = ?', [ProductName, id], (err) => {
-    if (err) return res.status(500).send(err);
-    res.send({ProductId: id, ProductName ,ProductCategory });
-  });
+  const { ProductName, ProductCategory } = req.body;
+  db.query(
+    'UPDATE products SET ProductName = ?, ProductCategory = ? WHERE ProductId = ?',
+    [ProductName, ProductCategory, id],
+    (err) => {
+      if (err) return res.status(500).send(err);
+      res.send({ ProductId: id, ProductName, ProductCategory });
+    }
+  );
 });
+
 
 app.delete('/products/:id', (req, res) => {
   const { id } = req.params;

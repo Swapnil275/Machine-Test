@@ -13,4 +13,8 @@ export class CategoriesService {
   getAllCategories(): Observable<any> { // Return an Observable
     return this._http.get<any>(this.baseUrl); 
   }
+
+  addCategory(payload: any): Observable<any> {
+    return this._http.post<any>(this.baseUrl, payload);
+  }
 }

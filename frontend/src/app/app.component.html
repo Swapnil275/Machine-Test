@@ -1,42 +1,4 @@
 <div class="container">
-  <!-- <h1>Hello World</h1>
-  <button (click)='getCategories()'>Get Categories</button> -->
-  <!-- <form (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="productName" class="form-label">Product Name</label>
-      <input
-        type="text"
-        class="form-control"
-        id="productName"
-        [(ngModel)]="productName"
-        name="productName"
-     
-      />
-    </div>
-    
-    <div class="mb-3">
-      <label for="categorySelect" class="form-label">Category</label>
-      <select
-        class="form-select"
-        id="categorySelect"
-        [(ngModel)]="selectedCategory"
-        name="selectedCategory"
-     
-      >
-        <option value="" selected>Select the Category</option>
-        <option
-          *ngFor="let category of categories"
-          [value]="category.CategoryName"
-        >
-          {{ category.CategoryName }}
-        </option>
-      </select>
-    </div>
-    
-    <button type="submit" class="btn btn-primary my-2" >
-      Add Product
-    </button>
-  </form> -->
   <form
     #productForm="ngForm"
     (ngSubmit)="onSubmit(productForm)"
@@ -120,49 +82,10 @@
           </button>
         </td>
       </tr>
-      <!-- <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>fat</td>
-        <td>fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td >Larry the Bird</td>
-        <td>twitter</td>
-        <td>twitter</td>
-        <td>twitter</td>
-      </tr> -->
     </tbody>
   </table>
-  <!-- <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link">Previous</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
-    </ul>
-  </nav> -->
-  <!-- <label for="pageSize">Page Size:</label>
-  <select
-    id="pageSize"
-    [(ngModel)]="pageSize"
-    (change)="getProducts(1, pageSize)"
-  >
-    <option [value]="5">5</option>
-    <option [value]="10" selected>10</option>
-    <option [value]="25">25</option>
-    <option [value]="50">50</option>
-  </select> -->
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-      <!-- Previous Button -->
       <li class="page-item" [class.disabled]="currentPage === 1">
         <a
           class="page-link"
@@ -173,8 +96,6 @@
           Previous
         </a>
       </li>
-
-      <!-- Dynamic Page Numbers -->
       <ng-container
         *ngFor="let page of [].constructor(totalPages); let i = index"
       >
@@ -188,8 +109,6 @@
           </a>
         </li>
       </ng-container>
-
-      <!-- Next Button -->
       <li class="page-item" [class.disabled]="currentPage === totalPages">
         <a
           class="page-link"
@@ -202,5 +121,25 @@
       </li>
     </ul>
   </nav>
+  <form
+    #categoryForm="ngForm"
+    (ngSubmit)="onSubmitCategory(categoryForm)"
+    class="container w-50 my-5"
+  >
+    <div class="mb-3">
+      <label for="categoryName" class="form-label">Category Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="categoryName"
+        [(ngModel)]="categoryName"
+        name="categoryName"
+        required
+      />
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Add Category</button>
+    </div>
+  </form>
 </div>
 <!-- <router-outlet /> -->

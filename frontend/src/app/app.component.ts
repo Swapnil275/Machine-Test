@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class AppComponent {
   title = 'frontend';
   productName: string = '';
+  categoryName: string = '';
   selectedCategory: string = '';
   editingProductId: number | null = null;
   categories: any[] = []; // Initialize an empty array for categories
@@ -43,7 +44,6 @@ export class AppComponent {
   }
   getCategories() {
     this.categoriesService.getAllCategories().subscribe((data: any) => {
-      // console.log('Received categories:', data);
       this.categories = data;
     });
   }
@@ -52,8 +52,6 @@ export class AppComponent {
     this.productsService
       .getAllProducts(page, pageSize)
       .subscribe((data: any) => {
-       
-        
         this.products = data.products; // Update the product list
         this.totalPages = data.totalPages; // Store the total pages
         this.totalProducts = data.totalProducts; // Store the total products
@@ -91,7 +89,7 @@ export class AppComponent {
           .updateProduct(this.editingProductId, payload)
           .subscribe(
             (response: any) => {
-              console.log('Product updated successfully:', response);
+              alert('Product updated successfully:');
               this.getProducts(); // Fetch the updated list of products
               this.resetForm(form); // Reset the form after update
             },
@@ -103,7 +101,7 @@ export class AppComponent {
         // Add a new product
         this.productsService.addProduct(payload).subscribe(
           (response: any) => {
-            console.log('Product added successfully:', response);
+            alert('Product added successfully:');
             this.getProducts(); // Fetch the updated list of products
             this.resetForm(form); // Reset the form after addition
           },
@@ -118,7 +116,7 @@ export class AppComponent {
   deleteProduct(id: number) {
     this.productsService.deleteProduct(id).subscribe(
       (response: any) => {
-        console.log('Product deleted successfully:');
+        alert('Product deleted successfully');
         this.getProducts();
       },
       (error) => {
@@ -132,6 +130,38 @@ export class AppComponent {
       this.productName = product.ProductName;
       this.selectedCategory = product.ProductCategory;
       this.editingProductId = productId;
+    }
+  }
+
+  onSubmitCategory(form: any): void {
+    if (form.valid) {
+      // Check for duplicate category
+      const duplicateCategory = this.categories.some(
+        (category: any) =>
+          category.CategoryName.toLowerCase() ===
+          this.categoryName.toLowerCase()
+      );
+
+      if (duplicateCategory) {
+        console.error('Duplicate category. This category already exists.');
+        alert('Category already exists!');
+        return; // Stop further execution
+      }
+
+      const payload = {
+        CategoryName: this.categoryName,
+      };
+
+      this.categoriesService.addCategory(payload).subscribe(
+        (response: any) => {
+          alert('Category added successfully:');
+          this.categoryName = '';
+          this.getCategories(); // Refresh category list
+        },
+        (error) => {
+          console.error('Error adding category:', error);
+        }
+      );
     }
   }
 }
